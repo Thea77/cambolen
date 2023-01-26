@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Cambolen</title>
+
+    <!--css start-->
+    <th:block th:include="~{fragments/styles}"></th:block>
+    <!-- end css -->
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <div th:replace="~{fragments/header}"></div>
+    <!-- End Header -->
+
+
+    <!-- start main -->
+    <div class="content">
+        <!-- content start -->
+        <div layout:fragment="content"></div>
+        <!-- end content -->
+    </div>
+    <!-- End main -->
+
+
+    <!-- ======= Footer ======= -->
+    <!-- <div th:replace="~{fragments/footer}"></div> -->
+    <!-- End Footer -->
+
+
+    <!-- go to top -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!--Script start-->
+    <th:block th:include="~{fragments/scripts}"></th:block>
+    <!-- end Script -->
+
+
+</body>
+
+</html>

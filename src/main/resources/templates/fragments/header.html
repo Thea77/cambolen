@@ -1,0 +1,61 @@
+<style>
+  #header{
+    z-index: 997;
+    transition: all 0.5s;
+    height: 80px;
+    background: rgba(25, 28, 31, 0.8) !important;
+  }
+</style>
+<header id="header" class="fixed-top d-flex justify-content-center align-items-center header-transparent">
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" th:href="@{/}" href="#hero">Home</a></li>
+        <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
+        <li><a class="nav-link scrollto" href="#about">About</a></li>
+        <!-- <li><a class="nav-link scrollto" href="#resume">Resume</a></li> -->
+        <li><a class="nav-link scrollto" href="#services">Services</a></li>
+        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+       
+        <!-- user -->
+        <li sec:authorize="isAuthenticated()" class="dropdown">
+          <a  class="nav-link scrollto" href="#">
+            <span class="text-warning" sec:authentication="name">UserName</span> 
+            <i class="bi bi-chevron-down"></i>
+          </a>
+          <ul>
+            <li>
+              <a th:href="@{/users-profile}">
+                My Profile
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/users-change-password}">
+                Change Password
+              </a>
+            </li>
+            <li class="dropdown">
+              <a sec:authorize="isAnonymous()"  class="nav-link scrollto" th:href="@{/Login}">
+                  <i class="mdi mdi-login"></i> 
+                  Login
+              </a>
+              <a sec:authorize="isAuthenticated()" class="nav-link scrollto" th:href="@{/logout}"> 
+                <i style="font-size: 20px;" class="bi bi-indent"></i>
+                  Logout
+              </a>
+            </li>
+        
+          </ul>
+        </li>
+        
+        <li sec:authorize="isAnonymous()">
+          <a  class="nav-link scrollto" th:href="@{/login}">
+            <span>Signin</span> 
+          </a>
+        </li>
+        
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+
+  </header>

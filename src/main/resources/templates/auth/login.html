@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/masterLayout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    
+    <div layout:fragment="content">
+        
+        <div style="background-color: rgba(25, 28, 31, 0.8) !important;">
+            <section class="volunteer-section section-padding" id="section_4">
+                <div class="container mt-5">
+                    <div class="row justify-content-center">
+    
+                        <div class="col-xl-5 col-lg-5 col-md-7 col-12 p-5 my-4"
+                            style="border:1px solid rgb(233, 233, 233);
+                                    text-align: center;background-color: rgb(241, 241, 241); 
+                                    border-radius: 4px;">
+                            <h4 class="mb-4" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(46, 107, 107);">
+                                Welcome Back To Cambolen</h4>
+    
+                            <form class="custom-form volunteer-form mb-lg-0" th:action="@{/login}" method="post"
+                                role="form">
+    
+                                <div class="row justify-content-center">
+    
+                                    <div class="col-lg-9 col-12 my-2 input-group flex-nowrap">
+                                        <input type="text" name="username" class="form-control py-2"
+                                            placeholder="username" required>
+                                            <span class="input-group-text" id="addon-wrapping">
+                                                <i class="bi-person-lines-fill"></i>
+                                            </span> 
+                                    </div>
+    
+                                    <div class="col-lg-9 col-12 my-2 input-group flex-nowrap">
+                                        <input type="password" name="password" class="form-control py-2" placeholder="Password"
+                                            required>
+                                            <span class="input-group-text" id="addon-wrapping">
+                                                <i  class="bi-lock-fill"></i>
+                                            </span> 
+                                    </div>
+                                    <div class="col-lg-9 col-12 my-2">
+                                        <button style="background-color: #078067e5; font-weight: 600;" type="submit"
+                                            class="form-control text-white text-md py-2">Log in</button>
+    
+                                    </div>
+    
+                                </div>
+    
+                            </form>
+    
+                            <a href="#">
+                                <p class="py-3 mb-1" style="text-align: center; font-size: 14px;">Forgot your password?</p>
+                            </a>
+                                                    
+                            <p  style="text-align: center; font-size: 14px;">Not a member?
+                                <a th:href="@{/register}">Register</a>
+                            </p>
+                           
+                        </div>
+    
+                     
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <th:block layout:fragment="scripts">
+      
+    </th:block>
+</body>
+
+</html>

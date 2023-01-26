@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/masterLayout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send verification Email</title>
+</head>
+
+<body>
+
+    <div layout:fragment="content">
+
+        <div style="background-color: rgba(25, 28, 31, 0.8) !important;">
+            <section class="volunteer-section section-padding" id="section_4">
+                <div class="container mt-5">
+                    <div class="row justify-content-center">
+
+                        <div class="col-xl-5 col-lg-5 col-md-7 col-12 p-5 my-4" style="border:1px solid rgb(233, 233, 233);
+                                    text-align: center;background-color: rgb(241, 241, 241); 
+                                    border-radius: 4px;">
+                            <h4 class="mb-4"
+                                style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(46, 107, 107);">
+                                Send verification Email</h4>
+
+                            <form class="custom-form volunteer-form mb-lg-0" th:action="@{/verify-email}" method="post"
+                                role="form" th:object="${emailDto}">
+
+                                <div class="row justify-content-center">
+
+                                    <div class="col-xl-6 col-lg-6 col-12 my-2 input-group flex-nowrap">
+                                        <input type="email" th:field="*{value}" name="email" class="form-control py-2"
+                                            placeholder="email" required>
+                                        <span class="input-group-text" id="addon-wrapping">
+                                            <i class="bi-person-lines-fill"></i>
+                                        </span>
+                                    </div>
+
+                                    <div class="col-lg-5 col-12 my-3">
+                                        <button style="background-color: #078067e5; font-weight: 600;" type="submit"
+                                            class="form-control text-white text-md py-2">Send</button>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- modal -->
+        <div th:replace="~{modal/modalMessage}"></div>
+        <!-- modal -->
+
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $(function () {
+            let isSucceed = /*[[${isSucceed}]]*/ "";
+            if (isSucceed == "sent") {
+                $('#myModal').modal('show');
+                $('.msg').append('<p style="font-weight: 600;" class="text-success">Please check and confirm your email</p>')
+            } else if (isSucceed == "CREATED") {
+                $('#myModal').modal('show');
+                $('.msg').append('<p class="text-success">You have been create a new account.</p><p class="text-success">Please verify your E-mail!</p>')
+            }
+        })
+    });
+</script>

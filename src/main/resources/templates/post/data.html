@@ -1,0 +1,88 @@
+<section id="portfolio" class="portfolio" xmlns:th="http://www.thymeleaf.org">
+  <div class="container">
+    <div class="section-title">
+      <span>Portfolio</span>
+      <h2>Portfolio</h2>
+      <p>The best free images and shared by creators</p>
+    </div>
+
+    <ul id="portfolio-flters" class="d-flex justify-content-center">
+      <li data-filter=".filter-lastes" class="filter-active">Lastes</li>
+      <li data-filter=".filter-top-download">Top downloaded</li>
+      <li data-filter=".filter-card">Card</li>
+      <li data-filter=".filter-web">Web</li>
+    </ul>
+
+    <!-- pagination -->
+    <div th:replace="~{post/pagination}">
+
+    </div>
+
+    <div class="row portfolio-container">
+
+      <!-- latest posts -->
+      <div class="col-lg-4 col-md-6 portfolio-item filter-lastes" th:each="item: ${data.data.list}">
+        <div class="portfolio-img">
+          <img th:src="${item.photo.uri}" class="img-fluid" alt="">
+        </div>
+        <div class="portfolio-info">
+          <div class="py-2">
+            <img th:src="${item.author.profile.uri}" alt="" style="width:50px; height:50px ;border-radius: 50%;" >
+          <span class="text-light" th:text="${item.author.username}"></span>
+          </div>
+
+          <h4 th:text="${item.title}">App</h4>
+          <p th:text="${item.description}">App</p>
+
+          <a th:href="${item.photo.uri}" data-gallery="portfolioGallery" 
+             class="portfolio-lightbox preview-link"
+             th:title="${item.description}">         
+              <i class="bx bx-plus"></i> 
+            </p>
+          </a>
+          <a th:href="${item.photo.uri}" class="details-link" title="download" download="downloadName.jpg">
+
+            <i class="bx bx-download"></i>
+          </a>
+        </div>
+      </div>
+      <!-- latest posts -->
+
+      <!-- top download posts -->
+      <div class="col-lg-4 col-md-6 portfolio-item filter-top-download" th:each="top: ${topDownload.data}">
+        <div class="portfolio-img">
+          <img th:src="${top.photo.uri}" class="img-fluid" alt="">
+        </div>
+        <div class="portfolio-info">
+          <div class="py-2">
+            <img th:src="${top.author.profile.uri}" alt="userProfile" style="width:50px; height:50px ;border-radius: 50%;" >
+          <span class="text-light" th:text="${top.author.username}"></span>
+          </div>
+
+          <h4 th:text="${top.title}">App</h4>
+          <p th:text="${top.description}">App</p>
+
+          <a th:href="${top.photo.uri}" data-gallery="portfolioGallery" 
+             class="portfolio-lightbox preview-link"
+             th:title="${top.description}">         
+              <i class="bx bx-plus"></i> 
+            </p>
+          </a>
+          <a href="#" class="details-link" title="download"><i class="bx bx-download"></i></a>
+        </div>
+      </div>
+      <!-- top downloadt post -->
+
+    </div>
+
+  </div>
+  
+</section>
+<!-- <script src="assets/js/jquery.min.js"></script>
+
+<script>
+  $(document).on('click', '.preview-link,.gbtn', function(e){
+    let data = $(this).children('#data').text()
+    console.log("ID="+data)
+  })
+</script> -->

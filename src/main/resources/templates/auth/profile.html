@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/masterLayout}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+<style>
+  .card-img {
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    .profile-pic {
+        background: url([[${data.profile.uri}]]) no-repeat;
+        /* background-size: 120px !important; */
+        background-size: cover !important;
+
+    }
+
+
+    .profile-pic {
+        object-fit: cover;
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-blend-mode: multiply;
+        vertical-align: middle;
+        text-align: center;
+        color: transparent;
+        transition: all .3s ease;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .profile-pic:hover {
+        background-color: rgba(37, 37, 37, 0.37);
+        z-index: 10000;
+        color: #fff;
+        transition: all .3s ease;
+        text-decoration: none;
+    }
+
+    .profile-pic span {
+        display: inline-block;
+        padding-top: 4.5em;
+        padding-bottom: 4.5em;
+    }
+</style>
+
+</head>
+
+<body>
+
+  <div layout:fragment="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <section class="h-100 gradient-custom-2">
+            <div class="container py-5 h-100">
+              <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12">
+                  <div class="card" th:object="${data}">
+                    <div class="text-white d-flex flex-row"
+                      style="background-color: rgb(46, 107, 107); height:200px;">
+                      <div class="ms-4 mt-5 d-flex flex-column">
+                          <div class="card-img mx-auto mb-3 mt-5" style="z-index: 1">
+                            <form id="formchangeImage" th:action="@{/users-change-profile}" method="post" enctype="multipart/form-data">
+                                <label for="changeImage">
+                                    <div class="profile-pic">
+                                        <span class="glyphicon glyphicon-camera"></span>
+                                        <span style="font-size: 22px;">
+                                          <i class="bi bi-camera"></i>
+                                        </span>
+                                    </div>
+                                </label>
+                                <input hidden type="file" id="changeImage" name="file"
+                                    accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" multiple>
+                            </form>
+                        </div>
+
+                        <a class="px-3" style="z-index:1; text-align: center;" th:href="@{/users-edit-profile}">
+                          <button type="button" class="btn btn-outline-dark px-3" data-mdb-ripple-color="dark" style="z-index: 1;color: #fff;
+                                      border-color: #05a081;
+                                      background: #05a081;
+                                      font-size: 14px;">
+                            <i class="bi bi-pencil"></i> Edit profile
+                          </button>
+                        </a>
+                      </div>
+                      <div class="ms-3" style="margin-top: 130px;">
+                        <h5 th:text="*{username}">User Name</h5>
+                        <p th:text="*{email}"></p>
+                      </div>
+                    </div>
+                    <div class="p-4 text-black" style="background-color: #f1f1f1;">
+                      <div class="d-flex justify-content-end text-center py-1" style="font-size: 15px;">
+                        <div>
+                          <p class="mb-1">253</p>
+                          <p class="small text-muted mb-0">Photos</p>
+                        </div>
+                        <div class="px-3">
+                          <p class="mb-1">1026</p>
+                          <p class="small text-muted mb-0">Followers</p>
+                        </div>
+                        <div>
+                          <p class="mb-1">478</p>
+                          <p class="small text-muted mb-0">Following</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body p-4 text-black mt-5">
+                      <div class="mb-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                          <p class="lead fw-normal mb-0">Recent photos</p>
+                          <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                        </div>
+                        <div class="row g-2">
+                          <div class="col mb-2">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
+                              alt="image 1" class="w-100 rounded-1">
+                          </div>
+                          <div class="col mb-2">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
+                              alt="image 1" class="w-100 rounded-1">
+                          </div>
+                        </div>
+                        <div class="row g-2">
+                          <div class="col">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
+                              alt="image 1" class="w-100 rounded-1">
+                          </div>
+                          <div class="col">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
+                              alt="image 1" class="w-100 rounded-1">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <th:block layout:fragment="scripts">
+  
+</th:block>
+
+</body>
+
+</html>
+<script th:inline="javascript">
+  $(document).ready(function () {
+      $(function () {
+          let isSucceed = /*[[${isSucceed}]]*/ "";
+          if (isSucceed == "UPDATEDIMAGE") {
+              $('#myModal').modal('show');
+              $('.msg').append('<p class="text-success">Updated User Profile Successfully</p>')
+          }
+      })
+       document.getElementById("changeImage").onchange = function() {
+      document.getElementById("formchangeImage").submit();
+  };
+  });
+ 
+</script>

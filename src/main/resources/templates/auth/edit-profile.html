@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/masterLayout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style th:inline="text">
+        label,.form-control {
+            font-size: 13px !important;
+            padding: 10px 5px;
+        }
+
+        form input[type="file"] {
+            display: none;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div layout:fragment="content">
+
+            <div class="bg-white border rounded mt-2">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-xl-6">
+                        <div class="profile-content-right py-5">
+                            <div class="tab-content px-3 px-xl-5">
+                                <div role="tabpanel">
+                                    <div class="mt-5">
+                                        <form th:action="@{/users-edit-profile}" method="post" th:object="${userDto}">
+                                            <div class="row mb-2">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-12 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="firstName">familyName</label>
+                                                        <input th:field="*{familyName}" type="text"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-12 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="lastName">givenName</label>
+                                                        <input th:field="*{givenName}" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-4 col-xl-6 col-lg-6 col-md-6 col-12 mt-2">
+                                                    <label for="phoneNumInput">Phone Number</label>
+                                                    <input th:field="*{phoneNumber}" type="text" class="form-control"
+                                                        id="phoneNumInput" placeholder="+855*********">
+                                                </div>
+
+                                                <div class="form-group mb-4 col-xl-6 col-lg-6 col-md-6 col-12 mt-2">
+                                                    <label for="emailInput">Email address</label>
+                                                    <input th:field="*{email}" required type="email"
+                                                        class="form-control" id="emailInput"
+                                                        placeholder="example@gmail.com">
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex justify-content-end mt-2">
+                                                <button type="submit" style="font-size: 13px;  border-color: #05a081;
+                                                background: #05a081;" 
+                                                class="btn btn-primary mb-2 btn-pill">
+                                                    Update Profile</button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+</body>
+
+</html>

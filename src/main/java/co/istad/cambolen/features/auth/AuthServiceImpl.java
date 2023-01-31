@@ -19,8 +19,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.istad.cambolen.config.security.CustomUserSecurity;
+import co.istad.cambolen.features.auth.web.ChangePasswordDto;
 import co.istad.cambolen.features.auth.web.CreateUserDto;
 import co.istad.cambolen.features.auth.web.LoginDto;
+import co.istad.cambolen.features.auth.web.UpdateUserDto;
 import co.istad.cambolen.features.file.model.File;
 import co.istad.cambolen.features.model.ApiResponse;
 import co.istad.cambolen.features.user.User;
@@ -118,6 +120,36 @@ public class AuthServiceImpl implements AuthService {
         // System.out.println("fileUriUserSecurity="+userSecurity.getUser());
 
         return fileResponse;
+    }
+
+    @Override
+    public ApiResponse<?> updateUserprofile(UpdateUserDto body) {
+      if (body != null) {
+        ApiResponse<?> response = webClientUtils.updateUserprofile("/edit-profile", body);
+       
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserSecurity userSecurity = (CustomUserSecurity) auth.getPrincipal();
+        userSecurity.getUser().setFamilyName(body.getFamilyName());
+        userSecurity.getUser().setGivenName(body.getGivenName());
+        userSecurity.getUser().setPhoneNumber(body.getPhoneNumber());
+        userSecurity.getUser().setEmail(body.getEmail());
+
+        // System.out.println("serviceUpdateProfile="+response);
+    return response;
+      }
+      return null;
+    }
+
+    @Override
+    public ApiResponse<?> changePassword(ChangePasswordDto body) {
+        ApiResponse<ChangePasswordDto> response = webClient.put()
+          .uri("/auth/change-password")
+          .bodyValue(body)
+          .retrieve()
+          .bodyToMono(new ParameterizedTypeReference<ApiResponse<ChangePasswordDto>>() {
+          }).block();
+   
+    return response;
     }
 
 }

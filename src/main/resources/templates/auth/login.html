@@ -34,7 +34,7 @@
                                         <input type="text" name="username" class="form-control py-2"
                                             placeholder="username" required>
                                             <span class="input-group-text" id="addon-wrapping">
-                                                <i class="bi-person-lines-fill"></i>
+                                                <i style="color: #585757e5;" class="bi-person-lines-fill"></i>
                                             </span> 
                                     </div>
     
@@ -42,7 +42,7 @@
                                         <input type="password" name="password" class="form-control py-2" placeholder="Password"
                                             required>
                                             <span class="input-group-text" id="addon-wrapping">
-                                                <i  class="bi-lock-fill"></i>
+                                                <i style="color: #585757e5;" class="bi-lock-fill"></i>
                                             </span> 
                                     </div>
                                     <div class="col-lg-9 col-12 my-2">
@@ -71,11 +71,30 @@
             </section>
         </div>
 
+        
+       <!-- modal start -->
+       <div th:replace="~{modal/modalMessage}"></div>
+       <!-- modal end -->
+
     </div>
 
     <th:block layout:fragment="scripts">
       
     </th:block>
+    
 </body>
 
 </html>
+<script th:inline="javascript">
+        $(document).ready(function () {
+            $(function () {
+                let isSucceed = /*[[${isSucceed}]]*/ "";
+                if (isSucceed == "CHANGEPASS") {
+                    $('#myModal').modal('show');
+                    $('.msg').append('<p class="text-success">Password Have Been Changed, Please Login</p>')
+                }
+            })
+    
+        });
+       
+      </script>

@@ -7,7 +7,9 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -37,9 +39,11 @@ public class AuthController {
 
     private final AuthServiceImpl authServiceImpl;
     private final WebClientUtils clientUtils;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/login")
-    String requestLoginView() {
+    String requestLoginView(ModelMap map,@ModelAttribute("isSucceed") String isSucceed) {
+        map.addAttribute("isSucceed", isSucceed);
         return "auth/login";
     }
 
@@ -121,19 +125,42 @@ public class AuthController {
         CustomUserSecurity userSecurity = (CustomUserSecurity) auth.getPrincipal();
 
         var response = userSecurity.getUser();
-        System.out.println("aut="+response);
-
+        // System.out.println("aut="+response);
+        map.addAttribute("isSucceed", isSucceed);
         map.addAttribute("data",response);
         return "auth/profile";
     }
 
     @GetMapping("/users-edit-profile")
-    String usersEditProfile(ModelMap map, UpdateUserDto userDto, @ModelAttribute("isSucceed") String isSucceed) {
+    String updateUserprofile(ModelMap map, UpdateUserDto body) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserSecurity userSecurity = (CustomUserSecurity) auth.getPrincipal();
 
-        map.addAttribute("userDto",userDto);
+        var response = userSecurity.getUser();
+
+        // System.out.println("aut="+response);
+        map.addAttribute("data",response);
+        // map.addAttribute("body",body);
         return "auth/edit-profile";
     }
+ /**
+     * Do update user profile
+     * 
+     * @param id
+     * @param body
+     * @return
+     */
+    @PostMapping("/users-edit-profile")
+    public String doUpdateUserprofile(@ModelAttribute("body") UpdateUserDto body, RedirectAttributes redirAttrs) {
+        if (body != null) {
+            // System.out.println("bodyProfile="+body);
+            authServiceImpl.updateUserprofile(body);
+            redirAttrs.addFlashAttribute("isSucceed", "UPDATED");
+        }
 
+        return "redirect:/users-profile";
+    }
+    
 
     @PostMapping(value = "/users-change-profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String doUpdateUserProfileImage(@PathParam("file") MultipartFile file, Long id) {
@@ -145,5 +172,59 @@ public class AuthController {
         authServiceImpl.updateProfileImage(file, id);
 
         return "redirect:/users-profile";
+    }
+
+
+      /**
+     * Get change password
+     * 
+     * @param id
+     * @return
+     */
+    @GetMapping("/change-password")
+    public String changePassword(Model map, @ModelAttribute("isSucceed") String isSucceed) {
+        map.addAttribute("passwordDto", new ChangePasswordDto());
+        map.addAttribute("isSucceed", isSucceed);
+        return "auth/change-password";
+    }
+
+    /**
+     * change password
+     * 
+     * @param id
+     * @param passwordDto
+     * @return
+     */
+    @PostMapping("/change-password")
+    public String doChangePassword(@Valid @ModelAttribute("passwordDto") ChangePasswordDto passwordDto,
+            BindingResult result, Model model, RedirectAttributes redirAttrs) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserSecurity customUserSecurity = (CustomUserSecurity) auth.getPrincipal();
+
+        if (!bCryptPasswordEncoder.matches(passwordDto.getCurrentPassword(), customUserSecurity.getPassword())) {
+            model.addAttribute("notMatch", "Current password is wrong!");
+            System.out.println("Password not Matched");
+            return "auth/change-password";
+        }
+
+        if (result.hasErrors()) {
+            System.out.println("Password="+model.asMap());
+            return "auth/change-password";
+        } else {
+            // System.out.println("Pass="+passwordDto);
+            authServiceImpl.changePassword(passwordDto);
+            String encodedPassword = bCryptPasswordEncoder.encode(passwordDto.getNewPassword());
+            customUserSecurity.getUser().setPassword(encodedPassword);
+           
+            // clear context header
+            SecurityContext context = SecurityContextHolder.getContext();
+            SecurityContextHolder.clearContext();
+            context.setAuthentication(null);
+
+            redirAttrs.addFlashAttribute("isSucceed", "CHANGEPASS");
+            return "redirect:/login";
+        }
+
     }
 }

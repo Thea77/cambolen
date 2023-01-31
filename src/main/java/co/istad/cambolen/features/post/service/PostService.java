@@ -8,5 +8,7 @@ public interface PostService {
 
     ApiResponse<?> getTopDownloadPosts();
 
+    ApiResponse<?> getPostDetail(Long id);
+
 
 }

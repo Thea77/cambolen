@@ -113,8 +113,8 @@
                         </div>
                       </div>
                     </div>
-                    <div class="card-body p-4 text-black mt-5">
-                      <div class="mb-5">
+                    <div class="card-body p-4 text-black mt-5 ">
+                      <div class="mb-5 px-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                           <p class="lead fw-normal mb-0">Recent photos</p>
                           <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
@@ -148,8 +148,13 @@
         </div>
       </div>
     </div>
+
+       <!-- modal start -->
+       <div th:replace="~{modal/modalMessage}"></div>
+       <!-- modal end -->
   </div>
 
+ 
 
   <th:block layout:fragment="scripts">
   
@@ -162,7 +167,7 @@
   $(document).ready(function () {
       $(function () {
           let isSucceed = /*[[${isSucceed}]]*/ "";
-          if (isSucceed == "UPDATEDIMAGE") {
+          if (isSucceed == "UPDATED") {
               $('#myModal').modal('show');
               $('.msg').append('<p class="text-success">Updated User Profile Successfully</p>')
           }

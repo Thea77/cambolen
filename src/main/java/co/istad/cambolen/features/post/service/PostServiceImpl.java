@@ -27,5 +27,13 @@ public class PostServiceImpl implements PostService{
         // System.out.println("TopDownload_Post="+response);
         return response;
     }
+
+    @Override
+    public ApiResponse<?> getPostDetail(Long id) {
+        ApiResponse<?> response = webClientUtils.fetchById("/posts",id);
+        // System.out.println("TopDownload_Post="+response);
+        return response;
+
+    }
     
 }

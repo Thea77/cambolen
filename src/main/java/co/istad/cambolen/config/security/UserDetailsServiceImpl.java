@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         CustomUserSecurity customUserSecurity = new CustomUserSecurity();
         customUserSecurity.setUser(user);
    
-        log.info("myUser= {}",customUserSecurity.getUser());
+        // log.info("myUser= {}",customUserSecurity.getUser());
         
         return customUserSecurity;
     }

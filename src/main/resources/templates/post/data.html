@@ -40,9 +40,8 @@
               <i class="bx bx-plus"></i> 
             </p>
           </a>
-          <a th:href="${item.photo.uri}" class="details-link" title="download" download="downloadName.jpg">
-
-            <i class="bx bx-download"></i>
+          <a th:href="@{/details/{id}(id = ${item.id})}" class="details-link">
+            <i style="font-size: 20px;" class="bi bi-eye"></i>
           </a>
         </div>
       </div>

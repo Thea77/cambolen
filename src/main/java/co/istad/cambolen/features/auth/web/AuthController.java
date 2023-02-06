@@ -42,7 +42,7 @@ public class AuthController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/login")
-    String requestLoginView(ModelMap map,@ModelAttribute("isSucceed") String isSucceed) {
+    String requestLoginView(ModelMap map, @ModelAttribute("isSucceed") String isSucceed) {
         map.addAttribute("isSucceed", isSucceed);
         return "auth/login";
     }
@@ -85,7 +85,7 @@ public class AuthController {
     public String doCreteUser(@Valid @ModelAttribute("userDto") CreateUserDto userDto,
             BindingResult result, @PathParam("file") MultipartFile file,
             RedirectAttributes redirAttrs,
-            Model model) throws JsonProcessingException{
+            Model model) throws JsonProcessingException {
 
         if (result.hasErrors()) {
             System.out.println("Password=" + model.asMap());
@@ -98,7 +98,6 @@ public class AuthController {
         }
     }
 
-
     @GetMapping("/verify-email")
     public String sendEmailConfirmation(Model map, @ModelAttribute("isSucceed") String isSucceed) {
         map.addAttribute("emailDto", new EmailConfirmationDto());
@@ -106,18 +105,16 @@ public class AuthController {
         return ("auth/verify-email");
     }
 
-    
-    
     @PostMapping("/verify-email")
-    String doSendEmailConfirmation(@ModelAttribute("emailDto") EmailConfirmationDto emailDto,RedirectAttributes redirAttrs) throws JsonProcessingException{
+    String doSendEmailConfirmation(@ModelAttribute("emailDto") EmailConfirmationDto emailDto,
+            RedirectAttributes redirAttrs) throws JsonProcessingException {
 
         redirAttrs.addFlashAttribute("isSucceed", "sent");
 
         clientUtils.insert("/auth/send-email-confirmation", emailDto.getValue());
-    
+
         return ("redirect:/verify-email");
     }
-
 
     @GetMapping("/users-profile")
     String usersProfile(ModelMap map, @ModelAttribute("isSucceed") String isSucceed) {
@@ -127,7 +124,7 @@ public class AuthController {
         var response = userSecurity.getUser();
         // System.out.println("aut="+response);
         map.addAttribute("isSucceed", isSucceed);
-        map.addAttribute("data",response);
+        map.addAttribute("data", response);
         return "auth/profile";
     }
 
@@ -139,11 +136,12 @@ public class AuthController {
         var response = userSecurity.getUser();
 
         // System.out.println("aut="+response);
-        map.addAttribute("data",response);
+        map.addAttribute("data", response);
         // map.addAttribute("body",body);
         return "auth/edit-profile";
     }
- /**
+
+    /**
      * Do update user profile
      * 
      * @param id
@@ -160,22 +158,16 @@ public class AuthController {
 
         return "redirect:/users-profile";
     }
-    
 
     @PostMapping(value = "/users-change-profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String doUpdateUserProfileImage(@PathParam("file") MultipartFile file, Long id) {
+    public String doUpdateUserProfileImage(@PathParam("file") MultipartFile file, ProfileDto body) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserSecurity userSecurity = (CustomUserSecurity) auth.getPrincipal();
-        id = userSecurity.getUser().getProfile().getId();
-        // System.out.println("ImageId="+id);
-        authServiceImpl.updateProfileImage(file, id);
+        authServiceImpl.updateProfileImage(file, body);
 
         return "redirect:/users-profile";
     }
 
-
-      /**
+    /**
      * Get change password
      * 
      * @param id
@@ -209,14 +201,14 @@ public class AuthController {
         }
 
         if (result.hasErrors()) {
-            System.out.println("Password="+model.asMap());
+            // System.out.println("Password=" + model.asMap());
             return "auth/change-password";
         } else {
             // System.out.println("Pass="+passwordDto);
             authServiceImpl.changePassword(passwordDto);
             String encodedPassword = bCryptPasswordEncoder.encode(passwordDto.getNewPassword());
             customUserSecurity.getUser().setPassword(encodedPassword);
-           
+
             // clear context header
             SecurityContext context = SecurityContextHolder.getContext();
             SecurityContextHolder.clearContext();
@@ -226,5 +218,46 @@ public class AuthController {
             return "redirect:/login";
         }
 
+    }
+
+    @GetMapping("/forgot/password")
+    public String forgotPassword(Model map) {
+        map.addAttribute("emailDto", new EmailConfirmationDto());
+        return ("auth/forget-password");
+    }
+
+    @PostMapping("/forgot/password")
+    public String doForgotPassword(@ModelAttribute("emailDto") EmailConfirmationDto emailDto,
+            RedirectAttributes redirAttrs) throws JsonProcessingException {
+        redirAttrs.addFlashAttribute("isSucceed", "sent");
+        if (emailDto != null) {
+            authServiceImpl.forgotPassword(emailDto);
+            return "redirect:/login";
+        }
+        return ("auth/forget-password");
+    }
+
+    @GetMapping("/reset/password")
+    String resetPassword(@RequestParam("email") String email,
+            @RequestParam("token") String token,Model model) {
+        model.addAttribute("passwordDto", new ResetPasswordDto());
+        model.addAttribute("email", email);
+        model.addAttribute("token", token);
+        return "auth/reset-password";
+    }
+
+    @PostMapping("/reset/password")
+    String doResetPassword(@Valid  @ModelAttribute("passwordDto") ResetPasswordDto passwordDto, 
+            BindingResult result, Model model, @RequestParam( value = "email", required = true) String email,
+            @RequestParam( value = "token", required = true) String token, 
+            RedirectAttributes redirAttrs) {
+      
+        if (result.hasErrors()) {
+            // System.out.println("Password=" + model.asMap());
+            return "auth/reset-password";
+        }
+            authServiceImpl.resetPassword(passwordDto,email,token);
+            redirAttrs.addFlashAttribute("isSucceed", "reset");
+            return "redirect:/login";
     }
 }

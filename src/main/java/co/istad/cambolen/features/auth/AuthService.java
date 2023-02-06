@@ -6,6 +6,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import co.istad.cambolen.features.auth.web.ChangePasswordDto;
 import co.istad.cambolen.features.auth.web.CreateUserDto;
+import co.istad.cambolen.features.auth.web.EmailConfirmationDto;
+import co.istad.cambolen.features.auth.web.ProfileDto;
+import co.istad.cambolen.features.auth.web.ResetPasswordDto;
 import co.istad.cambolen.features.auth.web.UpdateUserDto;
 import co.istad.cambolen.features.model.ApiResponse;
 
@@ -21,7 +24,7 @@ public interface AuthService {
      * @param id
      * @return
      */
-    ApiResponse<?> updateProfileImage(MultipartFile file, Long id);
+    ApiResponse<?> updateProfileImage(MultipartFile file, ProfileDto body);
 
      /**
      * edit user information
@@ -37,4 +40,22 @@ public interface AuthService {
      */
     ApiResponse<?> changePassword(ChangePasswordDto body);
 
+
+   /**
+    * forgot password
+    * @param body
+    * @return
+ * @throws JsonProcessingException
+    */
+    ApiResponse<?> forgotPassword(EmailConfirmationDto body) throws JsonProcessingException;
+
+
+    /**
+     * reset password
+     * @param body
+     * @param email
+     * @param token
+     * @return
+     */
+    ApiResponse<?> resetPassword(ResetPasswordDto body, String email, String token);
 }

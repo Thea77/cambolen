@@ -67,7 +67,9 @@
               <i class="bx bx-plus"></i> 
             </p>
           </a>
-          <a href="#" class="details-link" title="download"><i class="bx bx-download"></i></a>
+          <a th:href="@{/details/{id}(id = ${top.id})}" class="details-link">
+            <i style="font-size: 20px;" class="bi bi-eye"></i>
+          </a>
         </div>
       </div>
       <!-- top downloadt post -->

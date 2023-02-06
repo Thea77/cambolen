@@ -48,6 +48,8 @@ public class WebSecurityConfig {
                 .antMatchers("/register").permitAll()
                 .antMatchers("/verify-email").permitAll()
                 .antMatchers("/details/**").permitAll()
+                .antMatchers("/forgot/password/**").permitAll()
+                .antMatchers("/reset/password/**").permitAll()
                 .antMatchers("/static/**/**").permitAll()
 
                 .antMatchers("/post").hasAnyRole("ADMIN","EDITOR")

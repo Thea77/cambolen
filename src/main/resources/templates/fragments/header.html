@@ -49,8 +49,16 @@
         </li>
         
         <li sec:authorize="isAnonymous()">
-          <a  class="nav-link scrollto" th:href="@{/login}">
+          <a class="nav-link scrollto" th:href="@{/login}">
             <span>Signin</span> 
+          </a>
+        </li>
+
+        <li sec:authorize="isAuthenticated()">
+          <a  class="nav-link scrollto" th:href="@{/upload}">
+            <span>
+              Upload
+            </span> 
           </a>
         </li>
         

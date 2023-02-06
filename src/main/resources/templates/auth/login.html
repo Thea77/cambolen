@@ -22,9 +22,10 @@
                             style="border:1px solid rgb(233, 233, 233);
                                     text-align: center;background-color: rgb(241, 241, 241); 
                                     border-radius: 4px;">
+                                        <p id="sent"></p>
                             <h4 class="mb-4" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(46, 107, 107);">
                                 Welcome Back To Cambolen</h4>
-    
+
                             <form class="custom-form volunteer-form mb-lg-0" th:action="@{/login}" method="post"
                                 role="form">
     
@@ -55,7 +56,7 @@
     
                             </form>
     
-                            <a href="#">
+                            <a th:href="@{/forgot/password}">
                                 <p class="py-3 mb-1" style="text-align: center; font-size: 14px;">Forgot your password?</p>
                             </a>
                                                     
@@ -92,7 +93,12 @@
                 if (isSucceed == "CHANGEPASS") {
                     $('#myModal').modal('show');
                     $('.msg').append('<p class="text-success">Password Have Been Changed, Please Login</p>')
+                }else if(isSucceed == "sent"){
+                    $('#sent').append('<p style="font-size:14px;" class="text-light bg-secondary p-3">You will receive an email with instructions on how to reset your password in a few minutes.</p>')
+                }else if(isSucceed == "reset"){
+                    $('#sent').append('<p style="font-size:14px;" class="text-light bg-secondary p-3">Your password has been changed successfully.</p>')
                 }
+               
             })
     
         });

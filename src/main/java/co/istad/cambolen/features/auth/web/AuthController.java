@@ -88,7 +88,7 @@ public class AuthController {
             Model model) throws JsonProcessingException {
 
         if (result.hasErrors()) {
-            System.out.println("Password=" + model.asMap());
+            // System.out.println("Password=" + model.asMap());
             return ("auth/register");
         } else {
             // System.out.println("no error");

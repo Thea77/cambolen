@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/masterLayout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Home</title> -->
+
+    <style>
+        #upload {
+            opacity: 0;
+        }
+
+        #upload-label {
+            font-size: 12px;
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+        }
+
+        .image-area {
+            /* width: 90%; */
+            border: 2px dashed rgba(173, 173, 173, 0.7);
+            padding: 1rem;
+            position: relative;
+        }
+
+        .image-area::before {
+            content: 'Preview';
+            color: #9c9c9c;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+
+        .image-area img {
+            z-index: 2;
+            position: relative;
+        }
+    </style>
+</head>
+
+
+
+
+
+<body>
+    <div layout:fragment="content">
+
+        <div style="background-color: rgba(25, 28, 31, 0.8) !important;">
+            <section class="volunteer-section section-padding" id="section_4">
+                <div class="container mt-5">
+                    <div class="row justify-content-center">
+
+                        <div class="col-10 p-5 my-4" style="border:1px solid rgb(233, 233, 233);
+                                    text-align: center;background-color: rgb(241, 241, 241); 
+                                    border-radius: 4px;">
+                            <h4 class="mb-4" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(46, 107, 107);
+                                font-size: 25px;">
+                                Post Your Content</h4>
+
+                            <form class="custom-form volunteer-form mb-lg-0" th:action="@{/upload}" method="post"
+                                enctype="multipart/form-data" role="form" th:object="${body}">
+
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-7 col-md-7 col-10 mt-3">
+                                        <!-- Upload image input-->
+                                        <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                                            <input name="file" required id="upload" type="file" onchange="readURL(this);"
+                                                class="form-control border-0">
+                                            <label id="upload-label" for="upload"
+                                                class="font-weight-light text-muted"></label>
+                                            <div class="input-group-append">
+                                                <label style="font-size: 13px !important; text-align:center !important;" for="upload"
+                                                    class="btn btn-light m-0 rounded-pill px-4">
+                                                    <i id="icon" class="bi bi-cloud-upload text-muted"></i>
+                                                    <small class="text-uppercase font-weight-bold text-muted">
+                                                        Choose photo</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- Uploaded image area-->
+                                        <div class="image-area mt-4"><img id="imageResult" src="#" alt=""
+                                                class="img-fluid rounded shadow-sm mx-auto d-block">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-5 col-md-5 col-10"
+                                        style="text-align: left !important;">
+                                        <label style="font-size: 13px; font-weight: 600; color: #9c9c9c;"
+                                            for="title">Title</label>
+                                        <input th:field="*{title}" required type="text" class="form-control py-2"
+                                            id="title">
+
+                                        <div class="form-group my-4" style="text-align: left !important;">
+                                            <label style="font-size: 13px; font-weight: 600; color: #9c9c9c;"
+                                                for="Location">Location</label>
+                                            <input th:field="*{location}" required type="text" class="form-control py-2"
+                                                id="title">
+                                        </div>
+
+                                        <div class="form-group" style="text-align: left !important;">
+                                            <label style="font-size: 13px; font-weight: 600; color: #9c9c9c;"
+                                                for="description">Description</label>
+                                            <textarea th:field="*{description}" required class="form-control"
+                                                id="description" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <div class="col-lg-3 col-md-4 col-6 mt-4 mb-0">
+                                        <button style="background-color: #078067e5; font-weight: 600; font-size: 15px;"
+                                            type="submit" class="form-control text-white text-md py-2">
+                                            Submit Content
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <th:block layout:fragment="scripts">
+            <script src="assets/js/jquery.min.js"></script>
+        </th:block>
+
+        <script>
+            /*  ==========================================
+                SHOW UPLOADED IMAGE
+            * ========================================== */
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imageResult')
+                            .attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $(function () {
+                $('#upload').on('change', function () {
+                    readURL(input);
+                });
+            });
+
+            /*  ==========================================
+                SHOW UPLOADED IMAGE NAME
+            * ========================================== */
+            var input = document.getElementById('upload');
+            var infoArea = document.getElementById('upload-label');
+
+            input.addEventListener('change', showFileName);
+            function showFileName(event) {
+                var input = event.srcElement;
+                var fileName = input.files[0].name;
+                infoArea.textContent = 'File name: ' + fileName;
+            }
+
+        </script>
+
+
+</body>
+
+</html>
